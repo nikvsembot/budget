@@ -1,0 +1,22 @@
+{
+  "name": "budget",
+  "private": true,
+  "type": "module",
+  "description": "Budget app with free on-phone receipt scanning and handed-in receipt batches",
+  "scripts": {
+    "vendor": "node scripts/vendor.mjs",
+    "test": "node test/parse.test.mjs",
+    "serve": "python3 -m http.server 8080"
+  },
+  "devDependencies": {
+    "@tesseract.js-data/eng": "^1.0.0",
+    "@tesseract.js-data/jpn": "^1.0.0",
+    "@tesseract.js-data/rus": "^1.0.0",
+    "esbuild": "^0.28.2",
+    "firebase": "^10.14.1",
+    "htm": "^3.1.1",
+    "preact": "^11.2.0",
+    "tesseract.js": "^7.0.0",
+    "tesseract.js-core": "^7.0.0"
+  }
+}
