@@ -9,7 +9,7 @@ import {
   CURRENCIES, CUR, money, moneyMix, sumByCur, roundAmount,
 } from './util.js';
 
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 const TABS = ['home', 'receipts', 'settings'];
 
 // ---------- hooks ----------
@@ -203,7 +203,7 @@ function Receipts({ s, onEdit }) {
   const [rename, setRename] = useState(null);
 
   const pending = useMemo(() => Object.values(s.entries).filter(e => e.rc === 'pending')
-    .sort((a, b) => a.date.localeCompare(b.date)), [s.entries]);
+    .sort((a, b) => b.date.localeCompare(a.date) || (b.created || 0) - (a.created || 0)), [s.entries]);
   const collected = useMemo(() => Object.values(s.entries).filter(e => e.rc === 'collected'), [s.entries]);
 
   // drop selections of receipts that are no longer pending
@@ -226,8 +226,8 @@ function Receipts({ s, onEdit }) {
   const selected = pending.filter(e => sel.has(e.id));
 
   const batches = Object.values(s.batches).sort((a, b) => b.date.localeCompare(a.date) || b.created - a.created)
-    .map(b => ({ ...b, items: collected.filter(e => e.batch === b.id).sort((x, y) => x.date.localeCompare(y.date)) }));
-  const loose = collected.filter(e => !e.batch || !s.batches[e.batch]).sort((x, y) => x.date.localeCompare(y.date));
+    .map(b => ({ ...b, items: collected.filter(e => e.batch === b.id).sort((x, y) => y.date.localeCompare(x.date) || (y.created || 0) - (x.created || 0)) }));
+  const loose = collected.filter(e => !e.batch || !s.batches[e.batch]).sort((x, y) => y.date.localeCompare(x.date) || (y.created || 0) - (x.created || 0));
   if (loose.length) batches.push({ id: '_loose', name: 'Handed in earlier', date: null, items: loose });
 
   return html`<div class="page">
